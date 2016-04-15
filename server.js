@@ -53,11 +53,13 @@ MongoClient.connect(config.db, function(err, db) {
 
     // Enable session management using express middleware
     app.use(session({
-        secret: "s3Cur3",
+        secret: config.cookieSecret,
         cookie: {
             httpOnly: true,
             secure: true
-        }
+        },
+        saveUninitialized: true,
+        resave: true
     }));
 
     // Register templating engine
@@ -72,7 +74,6 @@ MongoClient.connect(config.db, function(err, db) {
     // Template system setup
     swig.setDefaults({
         // Autoescape disabled
-        root: __dirname + "/app/views",
         autoescape: true
     });
 
