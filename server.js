@@ -11,7 +11,7 @@ var http = require("http");
 var app = express(); // Web framework to handle routing requests
 var routes = require("./app/routes");
 var config = require("./config/config"); // Application config properties
-
+var sanitize = require('mongo-sanitize');
 
 /*************** SECURITY ISSUES ***************
  ** There are several security issues with    **

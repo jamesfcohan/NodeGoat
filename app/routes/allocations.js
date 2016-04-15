@@ -19,11 +19,12 @@ function AllocationsHandler(db) {
          ** accessing a different user account?       **
          ***********************************************/
         var userId = req.params.userId;
+        var userIdClean = sanitize(userId);
 
-        allocationsDAO.getByUserId(userId, function(err, docs) {
+        allocationsDAO.getByUserId(userIdClean, function(err, docs) {
             if (err) return next(err);
 
-            docs.userId = userId; //set for nav menu items
+            docs.userIdClean = userIdClean; //set for nav menu items
 
             return res.render("allocations", docs);
         });

@@ -8,10 +8,11 @@ function ProfileHandler(db) {
 
     this.displayProfile = function(req, res, next) {
         var userId = req.session.userId;
+        var userIdClean = sanitize(userId);
 
-        profile.getByUserId(parseInt(userId), function(err, doc) {
+        profile.getByUserId(parseInt(userIdClean), function(err, doc) {
             if (err) return next(err);
-            doc.userId = userId;
+            doc.userIdClean = userIdClean;
 
             return res.render("profile", doc);
         });
@@ -28,9 +29,16 @@ function ProfileHandler(db) {
         var bankRouting = req.body.bankRouting;
 
         var userId = req.session.userId;
+        var userIdClean = sanitize(userId);
+        var lastName = sanitize(lastName);
+        var ssn = sanitize(ssn);
+        var dob = sanitize(dob);
+        var address = sanitize(address);
+        var bankAcc = sanitize(bankAcc);
+        var bankRouting = sanitize(bankRouting);
 
         profile.updateUser(
-            parseInt(userId),
+            parseInt(userIdClean),
             firstName,
             lastName,
             ssn,
@@ -45,7 +53,7 @@ function ProfileHandler(db) {
                 // WARN: Applying any sting specific methods here w/o checking type of inputs could lead to DoS by HPP
                 //firstName = firstName.trim();
                 user.updateSuccess = true;
-                user.userId = userId;
+                user.userIdClean = userIdClean;
 
                 return res.render("profile", user);
             }
