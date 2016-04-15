@@ -40,6 +40,7 @@ MongoClient.connect(config.db, function(err, db) {
     }
     console.log("Connected to the database: " + config.db);
 
+
     // Adding/ remove HTTP Headers for security
     app.use(favicon(__dirname + "/app/assets/favicon.ico"));
 
@@ -52,9 +53,11 @@ MongoClient.connect(config.db, function(err, db) {
 
     // Enable session management using express middleware
     app.use(session({
-        secret: config.cookieSecret,
-        saveUninitialized: true,
-        resave: true
+        secret: "s3Cur3",
+        cookie: {
+            httpOnly: true,
+            secure: true
+        }
     }));
 
     // Register templating engine
@@ -69,8 +72,11 @@ MongoClient.connect(config.db, function(err, db) {
     // Template system setup
     swig.setDefaults({
         // Autoescape disabled
-        autoescape: false
+        root: __dirname + "/app/views",
+        autoescape: true
     });
+
+
 
     // Insecure HTTP connection
     http.createServer(app).listen(config.port,  function() {
